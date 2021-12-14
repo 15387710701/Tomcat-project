@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script src="js/main.js"></script>
+    <link rel="stylesheet" src="css/main.css" />
+    <title>Document</title>
+</head>
+
+<body>
+    <div>
+        <div>
+            <input type="text" placeholder="请输入用户名" id="username" />
+            <input type="text" placeholder="请输入中文名" id="chrname" />
+            <input type="text" placeholder="请输入省份" id="province" />
+        </div>
+        <div>
+            <input type="button" value="查询" id="btQuery" />
+            <input type="button" value="清空" id="btClear" />
+            <input type="button" value="增加" id="btAdd" />
+            <input type="button" value="删除" id="btDelete" />
+            <input type="button" value="修改" id="btUpdate" />
+        </div>
+    </div>
+    <div>
+        <table border="1" cellspacing="0" cellpadding="10">
+            <thead>
+                <td>选择</td>
+                <td>用户名</td>
+                <td>姓名</td>
+                <td>省份</td>
+                <td>城市</td>
+                <td>操作</td>
+            </thead>
+            <tbody id="tbData">
+
+            </tbody>
+        </table>
+    </div>
+    <div>
+        <div>
+            每页<select id="page">
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="5">5</option>
+            </select> 共
+            <span id="total">*****</span>条数据
+            <span id="currentPage">1</span>页/
+            <span id="totalPage">*****</span>页
+        </div>
+        <div>
+            <a id="first" href="javascript:first()">首页</a>
+            <a id="prev" href="javascript:prev()">上页</a>
+            <a id="next" href="javascript:next()">下页</a>
+            <a id="last" href="javascript:last()">尾页</a>
+        </div>
+    </div>
+</body>
+
+</html>

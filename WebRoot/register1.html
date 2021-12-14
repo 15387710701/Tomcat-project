@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <p>用户名:<input type="text" id="username" name="username" placeholder="请输入用户名" />
+        <a style="color: red;" id="msg"></a>
+    </p>
+    <p>密&nbsp码:<input type="password" id="pass1" name="pass1" placeholder="请输入密码" />
+        <a style="color: red;" id="msg3"></a>
+    </p>
+    <p>确认密码:<input type="password" id="pass2" name="pass2" placeholder="请确认输入密码" />
+        <a style="color: red;" id="msg4"></a>
+    </p>
+    <p>真实姓名:<input type="text" id="chrname" name="chrname" placeholder="请输入真实姓名" /> </p>
+    <p>
+        省份 <select name="provinceCode" id="province">
+ 
+              </select>
+    </p>
+    <p>
+        城市<select id="city" name="cityCode">
+
+        </select>
+    </p>
+    <p><input type="button" id="btRegister" value="注册" /></p>
+    <p style="color: red; " id="msg2"></p>
+    </p>
+</body>
+
+</html>
+
+<script>
+    $(document).ready(
+        function() {
+            $.ajax({
+                type: "post",
+                url: "queryProvince.do",
+                data: {},
+                dataType: "json",
+                success: function(data) {
+                    var obj = document.getElementById("province");
+                    obj.options.length = 0;
+                    obj.add(new Option("请选择省份", ""));
+                    for (var i = 0; i < data.length; i++) {
+                        obj.add(new Option(data[i].provinceName, data[i].provinceCode));
+                    }
+                }
+            });
+            //id-username元素的onblur事件
+            $("#username").blur(
+                function() {
+                    var data = {
+                        username: $("#username").val()
+                    };
+                    $.ajax({
+                        type: "post",
+                        url: "CheckUserName.do",
+                        data: data,
+                        /*data: {
+                            username: $("#username").val()
+                        },*/
+                        success: function(info) {
+                            if (info == "0") {
+                                $("#msg").text("用户名可以使用");
+                            }
+                            if (info == "1") {
+                                $("#msg").text("用户名已经存在，请换一个");
+                                //document.getElementById("msg").innerText = "用户名已经存在，请换一个";
+                            }
+                            if (info == "3") {
+                                //document.getElementById("msg").innerText = "用户名不能为空";
+                                $("#msg").text("用户名不能为空");
+                            }
+                        }
+                    });
+                }
+            );
+            $("#province").change(
+                function() {
+                    $.ajax({
+                        type: "post",
+                        url: "queryCity.do",
+                        data: {
+                            provinceCode: $("#province").val()
+                        },
+                        dataType: "json",
+                        success: function(datas) {
+                            var obj = document.getElementById("city");
+                            obj.options.length = 0;
+                            obj.add(new Option("请选择城市", ""));
+                            for (var i = 0; i < datas.length; i++) {
+                                obj.add(new Option(datas[i].cityName, datas[i].cityCode));
+                            }
+                        }
+                    });
+                }
+            );
+
+            $("#btRegister").click(
+                function() {
+                    var data = {
+                        username: $("#username").val(),
+                        chrname: $("#chrname").val(),
+                        password: $("#pass1").val(),
+                        provinceCode: $("#province").val(),
+                        cityCode: $("#city").val()
+                    };
+                    $.ajax({
+                        type: "post",
+                        url: "RegisterAjax.do",
+                        data: data,
+                        success: function(info) {
+                            if (info == "0") {
+                                $("#msg2").html("注册成功!<a href='login1.html'>返回登陆页面</a>");
+                            } else {
+                                $("#msg2").text("注册失败");
+                            }
+                        }
+                    });
+                }
+            );
+        });
+</script>
